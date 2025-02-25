@@ -1,6 +1,7 @@
 // src/app/utils/deepSekkService.ts
 import axios from 'axios';
 
+//agarrrem els valor de les api keys desde el archiu .env.local per a evitar que puguen ser vistes per ataques
 const apiKey = process.env.DEEPSEEK_API_KEY;
 const apiUrl = process.env.DEEPSEEK_API_URL || '';
 
@@ -22,6 +23,7 @@ export async function generateNamesFromDescription(description: string): Promise
         messages: [
           {
             role: "system",
+            //prompt amb les instruccions que ha de seguir el model, en este cas he posat un poc mes de info de la que demanaves per a que el model puga generar millors noms
             content: `Eres un asistente experto en branding y marketing que genera nombres creativos, llamativos y únicos para startups. Los nombres deben ser cortos, fáciles de recordar y relevantes para la idea descrita. Responde únicamente con una lista numerada de 5 nombres, sin explicaciones ni texto adicional.`,
           },
           {
@@ -46,7 +48,7 @@ export async function generateNamesFromDescription(description: string): Promise
       const resultText: string = response.data.choices[0].message.content;
       return resultText
         .split('\n')
-        .map((name: string): string => name.replace(/^\d+\.\s*/, '').trim()) // ✅ Tipado explícito corregido aquí
+        .map((name: string): string => name.replace(/^\d+\.\s*/, '').trim()) 
         .filter((name: string): boolean => name !== "");
     } else {
       console.error("Respuesta inesperada de DeepSeek:", response.data);

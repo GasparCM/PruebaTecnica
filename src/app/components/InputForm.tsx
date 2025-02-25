@@ -16,6 +16,14 @@ export default function InputForm({ onGenerate }: InputFormProps) {
     }
   };
 
+  // Añadim que si pulsa enter tambe senvie la peticio no domes al apretar el boto
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); 
+      handleSubmit(e as unknown as React.FormEvent); 
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto p-4">
       <textarea
@@ -24,6 +32,7 @@ export default function InputForm({ onGenerate }: InputFormProps) {
         placeholder="Describe tu idea de startup..."
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        onKeyDown={handleKeyDown} // Detectamos el enter
         required
       />
       <button
